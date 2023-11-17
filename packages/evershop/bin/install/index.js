@@ -236,38 +236,38 @@ DB_SSLROOTCERT="${filePath}"
 
   const connection = await pool.connect();
   await startTransaction(connection);
-  try {
-    // Create the admin user
-    const passwordHash = hashPassword(adminUser.password || '123456');
-    await execute(
-      connection,
-      `CREATE TABLE IF NOT EXISTS "admin_user" (
-        "admin_user_id" INT GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
-        "uuid" UUID NOT NULL DEFAULT gen_random_uuid (),
-        "status" boolean NOT NULL DEFAULT TRUE,
-        "email" varchar NOT NULL,
-        "password" varchar NOT NULL,
-        "full_name" varchar DEFAULT NULL,
-        "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-        "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-        CONSTRAINT "ADMIN_USER_EMAIL_UNIQUE" UNIQUE ("email"),
-        CONSTRAINT "ADMIN_USER_UUID_UNIQUE" UNIQUE ("uuid")
-      );`
-    );
-    await insertOnUpdate('admin_user', ['email'])
-      .given({
-        status: 1,
-        email: adminUser?.email || 'admin@evershop.io',
-        password: passwordHash,
-        full_name: adminUser?.fullName || 'Admin'
-      })
-      .execute(connection);
-    await commit(connection);
-  } catch (e) {
-    await rollback(connection);
-    error(e);
-    process.exit(0);
-  }
+  // try {
+  //   // Create the admin user
+  //   const passwordHash = hashPassword(adminUser.password || '123456');
+  //   await execute(
+  //     connection,
+  //     `CREATE TABLE IF NOT EXISTS "admin_user" (
+  //       "admin_user_id" INT GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
+  //       "uuid" UUID NOT NULL DEFAULT gen_random_uuid (),
+  //       "status" boolean NOT NULL DEFAULT TRUE,
+  //       "email" varchar NOT NULL,
+  //       "password" varchar NOT NULL,
+  //       "full_name" varchar DEFAULT NULL,
+  //       "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  //       "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  //       CONSTRAINT "ADMIN_USER_EMAIL_UNIQUE" UNIQUE ("email"),
+  //       CONSTRAINT "ADMIN_USER_UUID_UNIQUE" UNIQUE ("uuid")
+  //     );`
+  //   );
+  //   await insertOnUpdate('admin_user', ['email'])
+  //     .given({
+  //       status: 1,
+  //       email: adminUser?.email || 'admin@evershop.io',
+  //       password: passwordHash,
+  //       full_name: adminUser?.fullName || 'Admin'
+  //     })
+  //     .execute(connection);
+  //   await commit(connection);
+  // } catch (e) {
+  //   await rollback(connection);
+  //   error(e);
+  //   process.exit(0);
+  // }
   messages.pop();
   messages.push(green('✔ Setup database'));
   messages.push(green('✔ Create admin user'));
