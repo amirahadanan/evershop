@@ -19,3 +19,4 @@ cypress
 .prettierignore
 .prettierrc
 mysqlToPostgres.js
+packages/evershop/bin/install/index.js
