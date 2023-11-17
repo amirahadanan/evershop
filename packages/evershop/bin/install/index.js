@@ -102,6 +102,8 @@ async function install() {
   };
 
   // We will try with SSL option enabled first
+  const fileName = 'prod-ca-2021.crt';
+  const filePath = path.resolve(CONSTANTS.ROOTPATH, fileName);
   let pool = new Pool({ ...baseDBSetting, ssl: true });
   let sslMode;
 
@@ -118,7 +120,7 @@ async function install() {
       // If the error is related to a self-signed certificate, provide the CA certificate
       const sslConfig = {
         rejectUnauthorized: false,
-        ca: fs.readFileSync('C:/Users/User/Desktop/evershop/prod-ca-2021.crt')
+        ca: fs.readFileSync(filePath)
       };
       pool = new Pool({ ...baseDBSetting, ssl: sslConfig });
       sslMode = 'verify-ca';
@@ -214,6 +216,7 @@ DB_NAME="${db.databaseName}"
 DB_USER="${db.databaseUser}"
 DB_PASSWORD="${db.databasePassword}"
 DB_SSLMODE="${sslMode}"
+DB_SSLROOTCERT="${filePath}"
 `
   );
 
