@@ -9,17 +9,17 @@ const fs = require('fs');
 
 const {
   execute,
-  startTransaction,
-  commit,
-  rollback,
-  insertOnUpdate
+  startTransaction
+  // commit,
+  // rollback,
+  // insertOnUpdate
 } = require('@evershop/postgres-query-builder');
 const { prompt } = require('enquirer');
 const { CONSTANTS } = require('@evershop/evershop/src/lib/helpers');
 const { error, success } = require('@evershop/evershop/src/lib/log/debuger');
-const {
-  hashPassword
-} = require('@evershop/evershop/src/lib/util/passwordHelper');
+// const {
+//   hashPassword
+// } = require('@evershop/evershop/src/lib/util/passwordHelper');
 
 // The installation command will create a .env file in the root directory of the project.
 // If you are using docker, do not run this command. Instead, you should set the environment variables in the docker-compose.yml file and run `npm run start`
@@ -35,7 +35,7 @@ async function install() {
   // eslint-disable-next-line no-var,vars-on-top
   var db;
   // eslint-disable-next-line no-var,vars-on-top
-  var adminUser;
+  // var adminUser;
 
   success(
     boxen(green('Welcome to EverShop - The open-source e-commerce platform'), {
@@ -144,58 +144,58 @@ async function install() {
     process.exit(0);
   }
 
-  const adminUserQuestions = [
-    {
-      type: 'input',
-      name: 'fullName',
-      message: 'Your full name',
-      initial: process.env.ADMIN_FULLNAME || '',
-      skip: !!process.env.ADMIN_FULLNAME
-    },
-    {
-      type: 'input',
-      name: 'email',
-      message: 'Your administrator user email',
-      initial: process.env.ADMIN_EMAIL || 'admin@admin.com',
-      skip: !!process.env.ADMIN_EMAIL,
-      validate: (value) => {
-        if (
-          !value.match(
-            // eslint-disable-next-line no-useless-escape
-            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          )
-        ) {
-          return 'Invalid email';
-        }
-        return true;
-      }
-    },
-    {
-      type: 'password',
-      name: 'password',
-      message: 'Your administrator user password',
-      initial: process.env.ADMIN_PASSWORD || '123456',
-      skip: !!process.env.ADMIN_PASSWORD,
-      validate: (value) => {
-        if (value.length < 8) {
-          return 'Your password must be at least 8 characters.';
-        }
-        if (value.search(/[a-z]/i) < 0) {
-          return 'Your password must contain at least one letter.';
-        }
-        if (value.search(/[0-9]/) < 0) {
-          return 'Your password must contain at least one digit.';
-        }
-        return true;
-      }
-    }
-  ];
+  // const adminUserQuestions = [
+  //   {
+  //     type: 'input',
+  //     name: 'fullName',
+  //     message: 'Your full name',
+  //     initial: process.env.ADMIN_FULLNAME || '',
+  //     skip: !!process.env.ADMIN_FULLNAME
+  //   },
+  //   {
+  //     type: 'input',
+  //     name: 'email',
+  //     message: 'Your administrator user email',
+  //     initial: process.env.ADMIN_EMAIL || 'admin@admin.com',
+  //     skip: !!process.env.ADMIN_EMAIL,
+  //     validate: (value) => {
+  //       if (
+  //         !value.match(
+  //           // eslint-disable-next-line no-useless-escape
+  //           /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  //         )
+  //       ) {
+  //         return 'Invalid email';
+  //       }
+  //       return true;
+  //     }
+  //   },
+  //   {
+  //     type: 'password',
+  //     name: 'password',
+  //     message: 'Your administrator user password',
+  //     initial: process.env.ADMIN_PASSWORD || '123456',
+  //     skip: !!process.env.ADMIN_PASSWORD,
+  //     validate: (value) => {
+  //       if (value.length < 8) {
+  //         return 'Your password must be at least 8 characters.';
+  //       }
+  //       if (value.search(/[a-z]/i) < 0) {
+  //         return 'Your password must contain at least one letter.';
+  //       }
+  //       if (value.search(/[0-9]/) < 0) {
+  //         return 'Your password must contain at least one digit.';
+  //       }
+  //       return true;
+  //     }
+  //   }
+  // ];
 
-  try {
-    adminUser = await prompt(adminUserQuestions);
-  } catch (e) {
-    process.exit(0);
-  }
+  // try {
+  //   adminUser = await prompt(adminUserQuestions);
+  // } catch (e) {
+  //   process.exit(0);
+  // }
 
   /* Start installation */
   const messages = [];
