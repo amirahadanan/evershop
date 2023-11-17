@@ -5,6 +5,8 @@ const { green } = require('kleur');
 const ora = require('ora');
 const boxen = require('boxen');
 const { Pool } = require('pg');
+const fs = require('fs');
+
 const {
   execute,
   startTransaction,
@@ -112,6 +114,14 @@ async function install() {
       // If the database does not support SSL, we will try to connect without SSL
       pool = new Pool({ ...baseDBSetting, ssl: false });
       sslMode = 'disable';
+    } else if (e.message.includes('self-signed certificate')) {
+      // If the error is related to a self-signed certificate, provide the CA certificate
+      const sslConfig = {
+        rejectUnauthorized: false,
+        ca: fs.readFileSync('C:/Users/User/Desktop/evershop/prod-ca-2021.crt')
+      };
+      pool = new Pool({ ...baseDBSetting, ssl: sslConfig });
+      sslMode = 'verify-ca';
     } else {
       error(e);
       process.exit(0);

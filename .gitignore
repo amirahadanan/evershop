@@ -8,6 +8,7 @@ themes
 .vscode
 npm-debug.log
 /package-log.json
+/package-lock.json
 /media
 /public
 .DS_Store
